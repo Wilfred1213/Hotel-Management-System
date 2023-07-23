@@ -1,0 +1,126 @@
+{% extends 'hotel/base/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+ 
+   
+
+<div class="jumbotron text-center pt-5 mb-0" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="{{ logos.logo.url }}" alt="Zuma Resort" class="logo-image" style="width: 150px; height: auto;">
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-4" style="font-family: 'Montserrat', sans-serif; color: #343a40;">Welcome to</h1>
+                <h2 class="display-4" style="font-family: 'Pacifico', cursive; color: #2b9e82;">Zuma Resort</h2>
+                <p class="lead" style="color: #6c757d;">Book a room here</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid pt-5 mx-auto">
+    <div class="row ">
+        <div class="col-md-4 col-sm-6 mx-auto mb-5">
+            <div class="card formcard">
+              <div class="sidebar">
+                <form class="booking-form" method="post" action=".">
+                  <h2 class="text-white text-center bg-secondary">Book Now</h2>
+                  {% for message in messages %}
+                    <div class="container text-danger mx-auto pt-2 alert fade-in alert-dismissible" >
+                      <p class="mb-2 mx-auto" style="background-color: #d8ede8; font-size: 1rem; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                        {{message}}
+                      </p>
+                    </div>
+                  {% endfor %}
+                    
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        {{ form.hotel }}
+                    </div>
+                                        
+                    <div class="form-group">
+                        {{ form.check_in }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.check_out }}
+                    </div>
+                   
+                  <button type="submit">Book This Room</button>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+             
+        
+          <div class="col-md-8 col-sm-12 mb-5 mx-auto">
+            <div class="card mb-5 col-md-12 mb-5" style="object-fit:contain;">
+              <div class="row g-0">
+                <div class="col-md-6">
+                  <img src="{{ rooms.images.url }}" alt="room image" class="card-img" style="object-fit: cover; height: 500px;">
+                </div>
+                <div class="col-md-6">
+                  <div class="card-body">
+                    <h2 class="card-title" style="font-size: 1.5rem;">{{ rooms.name|safe }}</h2>
+                    <p class="card-text" style="font-family: sans-serif; display: block; font-size: 1.5rem;">{{ rooms.description|safe }}</p>
+                    <p>Donec et purus nec lorem vehicula pretium. In sit amet tempor lacus. 
+                      Duis convallis fringilla eros, eu suscipit neque dignissim id. Ut at turpis ac 
+                      arcu tempor dignissim vitae vel quam. Etiam accumsan urna eget arcu ultricies scelerisque. Nulla aliquet vehicula quam, </p>
+                    <div class="row p-2" style="background-color: silver;">
+                      <div class="col-md-6 col-sm-3 mx-auto pt-5">
+                        <span style="font-size: 1rem; color: whitesmoke;"><strike>N</strike>: {{ rooms.price }}<small>/day</small></span>
+                      </div>
+                      <div class="col-md-6 col-sm-4 pt-5 mx-auto">
+                        <a href="" class="btn btn-secondary btn-block">Book Room</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    
+    </div>
+</div>
+
+<!-- room categories -->
+<div class="container-fluid mb-5 pt-5">
+  <div class="mx-auto">
+    <h2>Check Similar categories of room name </h2>
+  </div>
+  <div class="row mb-5">
+      {% for room in category %}
+      <div class="col-md-6 col-lg-6 mb-5">
+          <div class="card mb-5" style="object-fit: cover; width: 750px; ">
+              <img src="{{ room.images.url }}" alt="room image" class="card-img-top" style="object-fit: cover; height: 500px;">
+              <div class="card-body">
+                  <h2 class="card-title" style="font-size: 1.5rem;">{{ room.name|safe }}</h2>
+                  <p class="card-text" style="font-family:sans-serif; display: block; font: bold; font-size: 1.5rem;">{{ room.description |safe}}</p>
+                  <div class="row p-5" style="background-color: silver;">
+                      <div class="col-md-4 col-sm-3 mx-auto">
+                          <span style="font-size: 1.2rem; color: whitesmoke;"><strike>N</strike>: {{ room.price }}<small>/day</small></span>
+                      </div>
+                      <div class="col-md-4 col-sm-4 mx-auto">
+                          <a href="{% url 'booking_room' room.id %}" class="btn btn-secondary btn-block ">Book Room</a>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+
+<!-- end -->
+
+{% endblock %}
+
+  
