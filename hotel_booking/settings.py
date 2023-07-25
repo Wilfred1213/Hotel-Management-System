@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'bootstrap4',
-    # 'bootstrap4',
+  
     'djangoflutterwave',
     'hotel',
-    # 'djangoflutterwave'
+    
   
 ]
 
