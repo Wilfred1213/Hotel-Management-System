@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap4',
     # 'bootstrap4',
+    'djangoflutterwave',
     'hotel',
     # 'djangoflutterwave'
   
@@ -51,8 +52,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-PAYSTACK_SECRET_KEY = 'sk_test_36b368db8169aa7dad3dc90e74284f2443e33046'
-PAYSTACK_CALLBACK_URL = 'http://127.0.0.1:8000/paystack_callback/'
+# PAYSTACK_SECRET_KEY = 'sk_test_36b368db8169aa7dad3dc90e74284f2443e33046'
+# PAYSTACK_CALLBACK_URL = 'http://127.0.0.1:8000/paystack_callback/'
 
 # SESSION_COOKIE_AGE = 60
 
@@ -146,8 +147,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT =465
 EMAIL_USE_SSL=True
 EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'mathiaswilfred7@gmail.com'
-EMAIL_HOST_PASSWORD= 'jyeblgexoqbjemjn'
+EMAIL_HOST_USER = 'mathiaswilfre@gmail.com'
+EMAIL_HOST_PASSWORD= 'rttty'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

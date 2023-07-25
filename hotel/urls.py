@@ -10,6 +10,6 @@ urlpatterns = [
     path('room_availability/<int:roomtype_id>/', views.room_availability, name ='room_availability'),
     path('all_categories/<int:roomtype_id>/', views.all_categories, name ='all_categories'),
     path('cancel_order/<int:booked_id>/', views.cancel_order, name ='cancel_order'),
-    path('create_payment_intent/<int:room_id>/', views.create_payment_intent, name='create_payment_intent'),
-    path('paystack_callback/', views.paystack_callback, name='paystack_callback'),
+    # path('create_payment_intent/<int:room_id>/', views.create_payment_intent, name='create_payment_intent'),
+    # path('process_payment/', views.process_payment, name='process_payment'),
 ]

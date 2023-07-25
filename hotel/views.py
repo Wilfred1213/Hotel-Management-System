@@ -1,3 +1,5 @@
+import math
+from random import random
 from django.shortcuts import render, redirect, reverse
 from hotel.models import RoomType, Zumalogo,Booking, Room, BookedRoom, Payment
 from django.contrib import messages
@@ -6,6 +8,7 @@ from django.db.models import Q
 import paystack
 import paystackapi
 from datetime import datetime
+from . import env
 
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
@@ -164,72 +167,7 @@ def booked_room(request):
         'total': total_amount,  # Use the total_amount calculated in the loop
     }
 
-    if request.method == 'POST':
-        # Process the form submission and get the payment amount
-        amount = total_amount  # Get the actual amount from the booked room
-
-        # Create a Paystack transaction
-        headers = {
-            'Authorization': f'Bearer {settings.PAYSTACK_SECRET_KEY}',
-            'Content-Type': 'application/json',
-        }
-        data = {
-            'amount': amount * 100,  # Paystack expects amount in kobo (multiply by 100)
-            'email': 'user@example.com',  # Replace with the customer's email
-            'callback_url': settings.PAYSTACK_CALLBACK_URL,
-            'metadata': {
-                'room_ids': room_ids,  # Pass the list of room IDs as metadata
-            }
-        }
-        response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
-        data = response.json()
-
-        # Redirect the user to the Paystack payment page
-        return redirect(data['data']['authorization_url'])
-
     return render(request, 'hotel/success_page.html', context)
-
-from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt
-def paystack_callback(request):
-    if request.method == 'POST':
-        # Get the payment status and other details from the request data
-        payment_status = request.POST.get('status', '')
-        amount = request.POST.get('amount', '')
-        charge_id = request.POST.get('reference', '')
-        user = request.user
-        room_id = request.session.get('room_session_{}'.format(user.id)).get('room_id')
-
-        # Find the booking and room associated with this payment
-        booking = Booking.objects.get(id=room_id)
-        room = booking.room
-
-        if payment_status == 'success':
-            # Payment was successful, save the payment details to the Payment model
-            payment = Payment.objects.create(
-                user=user,
-                amount=amount,
-                charge_id=charge_id,
-                status=True,
-                room=room,
-            )
-
-            # Mark the booking as paid and update room availability
-            booking.is_paid = True
-            booking.save()
-            room.is_available = False
-            room.save()
-
-            # Redirect to the home page or a success page
-            return redirect('home')
-        else:
-            # Payment was not successful, handle the error scenario as needed
-            # You can redirect to an error page or display an error message
-            return redirect('error')  # Replace 'error' with the name/url of your error page view
-    else:
-        # Handle cases where the callback is not a POST request
-        return HttpResponse(status=400)  # Return a 400 Bad Request response
 
 
 
@@ -238,14 +176,6 @@ def cancel_order(request, booked_id):
     cancel.delete()
 
     messages.info(request, f'You cancel {cancel.room.name} order')
-    return redirect('booked_room')
-
-
-def create_payment_intent(request, room_id):
-    room = Room.objects.get(id = room_id)
-    room.is_available = False
-    room.save()
-    messages.info(request, 'Payment made successful')
     return redirect('booked_room')
 
 
