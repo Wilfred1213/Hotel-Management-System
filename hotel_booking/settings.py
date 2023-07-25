@@ -52,9 +52,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-# PAYSTACK_SECRET_KEY = 'sk_test_36b368db8169aa7dad3dc90e74284f2443e33046'
-# PAYSTACK_CALLBACK_URL = 'http://127.0.0.1:8000/paystack_callback/'
-
 # SESSION_COOKIE_AGE = 60
 
 MIDDLEWARE = [
@@ -147,6 +144,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT =465
 EMAIL_USE_SSL=True
 EMAIL_USE_TLS = False
+
 EMAIL_HOST_USER = 'mathiaswilfre@gmail.com'
 EMAIL_HOST_PASSWORD= 'rttty'
 
