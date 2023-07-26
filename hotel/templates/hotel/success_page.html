@@ -111,7 +111,7 @@
         
         {% for room in booked %}
         <div class="col-sm-12 col-md-12 col-lg-8 mb-5 mx-auto">
-            <div class="card mb-5" style="object-fit: cover; width: 750px; ">
+            <div class="card mb-5" style="object-fit: cover; width: 500px; ">
                 <img src="{{ room.room.images.url }}" alt="room image" class="card-img-top" style="object-fit: cover; height: 500px;">
                 <div class="card-body">
                     <h2 class="card-title" style="font-size: 1.5rem;">{{ room.room.name|safe }}</h2>
@@ -142,7 +142,7 @@
       amount: {{total}},
       currency: "NGN",
       payment_options: "card, mobilemoneyghana, ussd",
-      redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+      redirect_url: "https://http://127.0.0.1:8000/payment",
       meta: {
         consumer_id: 23,
         consumer_mac: "92a3-912ba-1192a",

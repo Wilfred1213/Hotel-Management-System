@@ -5,17 +5,15 @@ from hotel.models import RoomType, Zumalogo,Booking, Room, BookedRoom, Payment
 from django.contrib import messages
 from hotel.forms import BookingForm
 from django.db.models import Q
-import paystack
-import paystackapi
 from datetime import datetime
 from . import env
-
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
-
+import random
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -178,4 +176,29 @@ def cancel_order(request, booked_id):
     messages.info(request, f'You cancel {cancel.room.name} order')
     return redirect('booked_room')
 
+# @login_required
+def payment(request):
+    user = request.user
+    room_booked = Booking.objects.filter(user=user)
 
+    total_amount = 0
+    # room_ids = [room.room.id for room in room_booked]
+    for room in room_booked:
+        check_in = room.check_in
+        check_out = room.check_out
+        num_of_days = (check_out - check_in).days
+        total_amount += num_of_days * room.total_price  # Add the current room's total amount to the overall total
+    
+    rooms = Room.objects.get(id=user.id)
+    # roomname = rooms.name
+    # roomprice = rooms.price
+    payment = Payment.objects.create(
+        user = user,
+        amount=total_amount,
+        charge_id = random.randint(100000, 999999),
+        status = True,
+        room = rooms
+    )
+    payment.amount=room.total_price
+    messages.info(request, 'Paid successfully!')
+    return redirect('home')
