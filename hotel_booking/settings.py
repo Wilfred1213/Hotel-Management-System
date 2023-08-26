@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f7m+37ijhe0u-*g5@_3pjz=uw$=5)!^z(2)vxr82dprc$_o@35'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,27 +35,33 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+STATICFILES_FINDERS = (
+     'django.contrib.staticfiles.finders.FileSystemFinder',
+     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+     'compressor.finders.CompressorFinder',
+)
 INSTALLED_APPS = [
     'django.contrib.admin',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'crispy_forms',
-    'bootstrap4',
-  
-    'djangoflutterwave',
-    'hotel',
+    'crispy_bootstrap4',
+    'hotelapp',
     
-  
+    'djangoflutterwave',
+    'authentications',
+    
+    
 ]
 
-# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# CRISPY_TEMPLATE_PACK = 'bootstrap5'
+AUTH_USER_MODEL = 'authentications.CustomUser'
+
 
 # SESSION_COOKIE_AGE = 60
 
@@ -145,8 +156,8 @@ EMAIL_PORT =465
 EMAIL_USE_SSL=True
 EMAIL_USE_TLS = False
 
-EMAIL_HOST_USER = 'mathiaswilfre@gmail.com'
-EMAIL_HOST_PASSWORD= 'rttty'
+EMAIL_HOST_USER = 'mathiaswilfred7@gmail.com'
+EMAIL_HOST_PASSWORD= '123'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

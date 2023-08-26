@@ -1,0 +1,76 @@
+{% extends 'hotel/base/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %} Sign Up {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 card" style="background-color: black; border-style: dashed; margin-top: 20px; border-radius: 5%;">
+            <h2 class="text-center pt-3 mb-4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color:white;">Sign Up</h2>
+            <hr class="mb-4">
+            
+            <form method="POST" enctype="multipart/form-data" action="{% url 'authentications:register_user' %}" class="needs-validation">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                   
+                    {{ form.username|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.first_name|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.last_name|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.email|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                   
+                    {{ form.password1|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.password2|as_crispy_field }}
+                </div>
+                
+                <div class="form-group form-check">
+                    {{ form.is_customer|as_crispy_field }}
+                    
+                </div>
+                
+                <div class="form-group form-check">
+                    {{ form.is_staff|as_crispy_field }}
+                   
+                </div>
+                
+                <div class="form-group">
+                    {{ form.address|as_crispy_field }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.photo|as_crispy_field }}
+                </div>
+                  
+                {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                    <strong>Error:</strong> {{ form.non_field_errors.0 }}
+                </div>
+                {% endif %}
+                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                </div>
+                
+                <p class="text-center mt-3">Already have an account? <a href="{% url 'authentications:loggin' %}">Sign In</a></p>
+                <p class="text-center mt-3">Forgot your password? <a href="#">Reset</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

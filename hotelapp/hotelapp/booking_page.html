@@ -1,0 +1,100 @@
+{% extends 'hotel/base/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700|Pacifico&display=swap" rel="stylesheet">
+
+<div class="jumbotron text-center pt-5 mb-0" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="{{ logos.logo.url }}" alt="Zuma Resort" class="logo-image" style="width: 150px; height: auto;">
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-4" style="font-family: 'Montserrat', sans-serif; color: #343a40;">Welcome to</h1>
+                <h2 class="display-4" style="font-family: 'Pacifico', cursive; color: #2b9e82;">Zuma Resort</h2>
+                <p class="lead" style="color: #6c757d;">Book a room here</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-sm-6 mb-5">
+            <div class="card formcard">
+                <div class="sidebar">
+                    <form class="booking-form" method="post" action=".">
+                        <h2 class="text-white text-center bg-secondary p-2">Book Now</h2>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.hotel|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.check_in|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.check_out|as_crispy_field }}
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-block">Book This Room</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12 mb-5">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img src="{{ type_of_rooms.images.url }}" alt="room image" class="card-img img-fluid">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h2 class="card-title" style="font-size: 1.5rem;">{{ type_of_rooms.name|safe }}</h2>
+                            <p class="card-text">{{ type_of_rooms.description|safe }}</p>
+                            <div class="row p-2" style="background-color: silver;">
+                                <div class="col-md-6 col-sm-3">
+                                    <span style="font-size: 1rem; color: whitesmoke;"><strike>N</strike>: {{ type_of_rooms.price }}<small>/day</small></span>
+                                </div>
+                                <!-- <div class="col-md-6 col-sm-4 text-center">
+                                    <a href="" class="btn btn-secondary btn-block">Book Room</a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- room categories -->
+<div class="container-fluid mb-5 pt-5">
+    <div class="mx-auto">
+        <h2 class="text-center">Check Similar Categories of Room Names</h2>
+    </div>
+    <div class="row">
+        {% for room_category in category %}
+        <div class="col-md-6 col-lg-6 mb-4">
+            <div class="card" style="width: 100%;">
+                <img src="{{ room_category.images.url }}" alt="room image" class="card-img-top">
+                <div class="card-body">
+                    <h2 class="card-title" style="font-size: 1.5rem;">{{ room_category.name|safe }}</h2>
+                    <p class="card-text">{{ room_category.description|safe }}</p>
+                    <div class="row p-2" style="background-color: silver;">
+                        <div class="col-md-6 col-sm-3">
+                            <span style="font-size: 1rem; color: whitesmoke;"><strike>N</strike>: {{ room_category.price }}<small>/day</small></span>
+                        </div>
+                        <div class="col-md-6 col-sm-4 text-center">
+                            <a href="{% url 'booking_room' room_category.id %}" class="btn btn-secondary btn-block">Book Room</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- end -->
+
+{% endblock %}

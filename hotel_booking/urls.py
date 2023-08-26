@@ -21,11 +21,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hotel.urls')),
+    path('', include('hotelapp.urls')),
+    # path('', include('myapp.urls')),
+    path('authentications/', include('authentications.urls')),
+    
     # path("djangoflutterwave/", include("djangoflutterwave.urls", namespace="djangoflutterwave"))
     
 ]
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
-    urlpatterns +=static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

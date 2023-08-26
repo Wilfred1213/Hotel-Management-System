@@ -1,0 +1,126 @@
+{% extends 'hotelapp/base/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center pt-5 mb-0" style="background-color: #f8f9fa;">
+    <!-- Content for jumbotron as before -->
+</div>
+
+<div class="container-fluid pt-5">
+    <h2 class="text-center bg-dark text-white p-2">All the Rooms You've Booked</h2>
+
+    <div class="row">
+        {% for book in bookings %}
+        {% if book.is_paid %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card mb-4">
+                <img src="{{ book.availability_room_type.images.url }}" alt="room image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">{{ book.room_type.name }}</h3>
+                    <hr>
+                    <p class="card-text">
+                        <strike>N</strike>{{ book.total_price }} per day<br>
+                        <hr> 
+                        From: {{ book.check_in }}<br>
+                        <hr> 
+                        To: {{ book.check_out }}<br>
+                        <hr> 
+                        Number of days: {{ book.number_of_days }}
+                    </p>
+                    <hr> 
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <a href="" class="btn btn-danger btn-block">You have paid for this room</a>
+                        </div>
+                        <div class="col-md-12">
+                            <a href="{% url 'review_room' book.id %}" class="btn btn-danger btn-block">Review this room</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    
+    <div class="row">
+        {% for room in items %}
+        {% if not room.is_paid %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card mb-4">
+                <img src="{{ room.availability.room_type.images.url }}" alt="room image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">{{ room.availability.room_type.name }}</h3>
+                    <p class="card-text">
+                        <hr>
+                        <strike>N</strike>{{ room.availability.total_price }} per day
+                        <hr>
+                        From: {{ room.availability.check_in }}
+                        <hr>
+                        To: {{ room.availability.check_out }}
+                        <hr>
+                        
+                        {% for booked_room in room.availability.booked_rooms.all %}
+                        Room No:{{ booked_room.room_number }}
+                        
+                        {% endfor %}
+                        <hr>
+                        Number of days: {{ room.number_of_days }}
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% url 'paydetail' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <a href="{% url 'payment' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
+                        </div> -->
+                        <div class="col-md-6">
+                            <a href="{% url 'cancel_order' room.id %}" class="btn btn-danger btn-block">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4 text-center">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg btn-block">Book Another Room</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a href="{% url 'booked_room' %}" class="btn btn-secondary btn-lg btn-block">Pay All at Once</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-5">
+    <h2 class="text-center bg-dark text-white p-2">All Room Categories</h2>
+    <div class="row">
+        {% for room in roomtypes %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card mb-4">
+                <img src="{{ room.images.url }}" alt="room image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">{{ room.name }}</h3>
+                    <p class="card-text">{{ room.description }}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="font-weight-bold"><strike>N</strike>: {{ room.price }}<small>/day</small></span>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'booking_room' room.id %}" class="btn btn-secondary btn-block">Book Room</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+

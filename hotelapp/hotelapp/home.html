@@ -1,0 +1,53 @@
+{% extends 'hotel/base/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700|Pacifico&display=swap" rel="stylesheet">
+
+<div class="jumbotron text-center pt-5 mb-0" style="position: relative;">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="{{ logos.logo.url }}" alt="Zuma Resort" class="logo-image" style="max-width: 150px; height: auto;">
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-4" style="font-family: 'Montserrat', sans-serif; color: #343a40;">Welcome to</h1>
+                <h2 class="display-4" style="font-family: 'Pacifico', cursive; color: #2b9e82;">Zuma Resort</h2>
+                <p class="lead" style="color: #6c757d;">Book a room here</p>
+                
+                <a class=" text-white" href="#" id="navbarDropdown" role="button" aria-haspopup="true" >
+                    <img src="{{ user.photo.url }}" alt="Your Account" class="account-icon rounded-circle mr-2 text-white" style="width: 150px; height: 150px;">
+                    <h5 class="text-info">Hi, {{ user.username }}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mb-5 pt-5">
+    <div class="row">
+        {% for room in roomtypes %}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+            <div class="card shadow" style="border: none;">
+                <img src="{{ room.images.url }}" alt="room image" class="card-img-top img-fluid image-hover-effect" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h2 class="card-title" style="font-size: 1.5rem; font-family: 'Montserrat', sans-serif;">{{ room.name|safe }}</h2>
+                    <p class="card-text" style="font-family: sans-serif; font-size: 1rem;">{{ room.description|safe }}</p>
+                    <div class="row p-3" style="background-color: #f8f9fa;">
+                        <div class="col-6">
+                            <span style="font-size: 1rem; color: #343a40;"><strike>N</strike> {{ room.price }}<small>/day</small></span>
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="{% url 'booking_room' room.id %}" class="btn btn-secondary btn-sm">Book Room</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

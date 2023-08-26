@@ -1,0 +1,91 @@
+{% extends 'hotelapp/base/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+
+<div class="jumbotron text-center pt-5 mb-0" style="background-image: url('{{ logos.logo.url }}'); background-size: cover; background-position: center;">
+    
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="{{ logos.logo.url }}" alt="Zuma Resort" class="logo-image img-fluid" style="max-width: 150px;">
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-4 text-white" style="font-family: 'Montserrat', sans-serif;">Welcome to</h1>
+                <h2 class="display-4 text-primary" style="font-family: 'Pacifico', cursive;">Zuma Resort</h2>
+                <p class="lead text-dark">Book your dream room now</p>
+                
+                <div class="text-center">
+                    <img src="{{ user.photo.url }}" alt="Your Account" class="account-icon rounded-circle img-fluid" style="width: 150px; height: 150px;">
+                    <h5 class="text-white mt-3">Hi, {{ user.username }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-5 pt-5">
+    <div class="row">
+        {% for room in roomtypes %}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+            <div class="card shadow">
+                <img src="{{ room.images.url }}" alt="Room Image" class="image-hover-effect  img-fluid" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h2 class="card-title">{{ room.name|safe }}</h2>
+                    <p class="card-text">{{ room.description|safe }}</p>
+                    <div class="row p-3 bg-light">
+                        <div class="col-6">
+                            <span class="text-muted"><strike>N</strike> {{ room.price }}<small>/day</small></span>
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="{% url 'booking_room' room.id %}" class="btn btn-primary btn-sm">Book Room</a>
+                        </div>
+                    </div>
+                    <div class="row p-3 bg-light">
+                        <div class="col-12 text-center">
+                            <span>{{ roomtypes.avg_rating }}</span>
+                            {% if room == trending_room_type %}
+                                <span class="badge badge-success ml-2">Trending</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Reviews -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Reviews</h1>
+            <h2 class="display-4 text-primary">People's Views at Zuma Resort</h2>
+        </div>
+    </div>
+    <div class="row mt-4">
+        {% for review in reviews %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow pt-3">
+                <img src="{{ review.images.url }}" alt="User Profile" class="card-img-top img-fluid rounded-circle" style="height: 200px; width: 200px; object-fit: cover; margin: 0 auto;">
+                <h4 class="card-title text-center pt-3">{{ review.booking.user.first_name }} {{ review.booking.user.last_name }}</h4>
+                <div class="card-body">
+                    <h4 class="card-title">{{ review.booking.name|safe }}</h4>
+                    <p class="card-text">{{ review.review_text|truncatewords:50 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Posted on: {{ review.review_date }}</span>
+                        <a href="{% url 'delete_review' review.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                    <hr>
+                    <p class="font-weight-bold">Rating: {{ review.booking.room_type.name|safe }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
