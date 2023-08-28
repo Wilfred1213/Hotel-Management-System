@@ -104,9 +104,10 @@
 <script>
     function makePayment() {
     FlutterwaveCheckout({
-      public_key: "",
+      public_key: "FLWPUBK_TEST-6b070fbc8f443037d69d6c0fe33c7452-X",
       tx_ref: "titanic-48981487343MDI0NzMx",
-      amount: {{ total_price }},
+    //   amount: {{ total_price }},
+      amount: 100,
       currency: "NGN",
       payment_options: "card, mobilemoneyghana, ussd",
       redirect_url: "https://http://127.0.0.1:8000/payment",

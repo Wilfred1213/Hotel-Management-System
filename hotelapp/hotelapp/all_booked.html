@@ -69,12 +69,12 @@
                         Number of days: {{ room.number_of_days }}
                     </p>
                     <div class="row">
-                        <!-- <div class="col-md-6">
-                            <a href="{% url 'paydetail' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
-                        </div> -->
                         <div class="col-md-6">
-                            <a href="{% url 'payment' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
+                            <a href="{% url 'paydetail' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
                         </div>
+                        <!-- <div class="col-md-6">
+                            <a href="{% url 'payment' room.availability.id %}" class="btn btn-primary btn-block">Proceed</a>
+                        </div> -->
                         <div class="col-md-6">
                             <a href="{% url 'cancel_order' room.id %}" class="btn btn-danger btn-block">Cancel</a>
                         </div>

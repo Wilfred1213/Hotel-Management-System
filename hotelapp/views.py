@@ -28,7 +28,7 @@ def home(request):
     roomtypes = RoomType.objects.annotate(avg_rating=Avg('booking__review__rating')).order_by('-avg_rating')
    
     highest_avg_rating = 0  # Initialize with a low value
-
+    trending_room_type=None
     for roomtype in roomtypes:
         if roomtype.avg_rating is not None and roomtype.avg_rating > highest_avg_rating:
             highest_avg_rating = roomtype.avg_rating
@@ -110,6 +110,8 @@ def room_availability(request, roomtype_id):
     
     return render(request, 'hotelapp/availability.html', context)
 
+
+@login_required(login_url ='authentications:loggin')
 def booking_room(request, roomtype_id):
     logo = Zumalogo.objects.first()
     room_type = RoomType.objects.get(id=roomtype_id)
@@ -183,6 +185,7 @@ def available_rooms(request, room_id):
     }
     return render(request, 'hotelapp/error_page.html', context)
 
+@login_required(login_url='authentications:loggin')
 def payindividually(request):
     user = request.user
     
@@ -222,6 +225,7 @@ def payindividually(request):
     }
     return render(request, 'hotelapp/all_booked.html', context)
 
+@login_required(login_url='authentications:loggin')
 def paydetail(request, room_id):
     type_of_room = RoomType.objects.all()
     logo = Zumalogo.objects.first()
@@ -245,6 +249,7 @@ def paydetail(request, room_id):
     }
     return render(request, 'hotelapp/book_detail.html', context)
     
+@login_required(login_url='authentications:loggin')    
 def booked_room(request):
     user = request.user
     room_booked = Availability.objects.filter(user=user)
@@ -283,14 +288,12 @@ def cancel_order(request, booked_id):
     messages.info(request, f'You canceled the booking for {room_type}')
     return redirect('payindividually')
 
+@login_required(login_url='authentications:loggin')
 def payment(request, availability_id):
     # try:
     user = request.user
     availability = Availability.objects.get(id=availability_id)
     booked_item = BookingItem.objects.get(availability=availability)
-    
-    # Find a specific room associated with the user's bookings
-    # room = availability.booked_rooms.first()  # Assuming there's only one room booked per availability
     
     # Find the initially booked rooms queryset
     original_booked_rooms = availability.booked_rooms.all()
@@ -341,15 +344,10 @@ def payment(request, availability_id):
         messages.error(request, 'No available rooms. Booking could not be created.')
         return redirect('home')
 
-    # except Availability.DoesNotExist:
-    #     messages.error(request, 'The selected availability does not exist.')
-    #     return redirect('home')
 
 def review_room(request, booking_id):
     booking = Booking.objects.get(id = booking_id)
     
-    # rating = 0 
-    # rating_obj = (sum.rating for)
     if request.method =='POST':
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
